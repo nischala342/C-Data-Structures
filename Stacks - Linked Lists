@@ -1,0 +1,91 @@
+#include<stdio.h>
+#include<stdlib.h>
+struct node{
+    int data;
+    struct node *link;
+}*p;
+void push(){
+    int num;
+    struct node *q = (struct node*)malloc(sizeof(struct node));
+    if(q == NULL){
+        printf("Not able to push the element");
+    }
+    else{
+        printf("Enter the value: ");
+        scanf("%d",&num);
+        if(p == NULL){
+            q->data = num;
+            q->link = NULL;
+            p = q;
+        }
+        else{
+            q->data = num;
+            q->link = p;
+            p = q;
+        }
+        printf("Item pushed successfully\n");
+    }
+}
+void pop(){
+    int num;
+    struct node *q;
+    if(p == NULL){
+        printf("Underflow\n");
+    }
+    else{
+        num = p->data;
+        q = p;
+        p = p->link;
+        printf("Item popped is %d\n",num);
+        free(q);
+    }
+}
+void display(){
+    int i;
+    struct node *q;
+    q = p;
+    if(q == NULL){
+        printf("Stack is empty\n");
+    }
+    else{
+        printf("Elements are: \n");
+        while(q != NULL){
+            printf("%d\n",q->data);
+            q = q->link;
+        }
+    }
+    
+}
+int main(){
+    int choice=0;     
+    while(1)  
+    {  
+        printf("Chose one from the below options...\n");  
+        printf("1.Push\n2.Pop\n3.Display\n4.Exit\n");  
+        printf("Enter your choice \n");        
+        scanf("%d",&choice);  
+        switch(choice)  
+        {  
+            case 1:  
+            {   
+                push();  
+                break;  
+            }  
+            case 2:  
+            {  
+                pop();  
+                break;  
+            }  
+            case 3:  
+            {  
+                display();  
+                break;  
+            }  
+            case 4:   
+            {  
+                return 0;
+            }  
+    }  
+}  
+
+}
