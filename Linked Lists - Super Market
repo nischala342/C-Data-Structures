@@ -1,0 +1,106 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+struct market{
+    char product_name[20];
+    char product_num[20];
+    int price;
+    int quantity;
+    int tax;
+    int discount;
+};
+struct node{
+    struct market m;
+    struct node *link;
+};
+struct node *head;
+int total = 0;
+void insert();
+void createlist(){
+    char ch[3];
+    while(1){
+        printf("do you want to add items yes/no: ");
+        scanf("%s",ch);
+        if(!strcmp("yes",ch)){
+            insert();
+        }
+        else{
+            break;
+        }
+    }
+}
+void max_quantity(){
+    struct node *temp;
+    temp = head;
+    while(temp != NULL){
+        if(temp->m.quantity > 5){
+        printf("%s %s %d %d %d %d\n",temp->m.product_num,temp->m.product_name,temp->m.price,temp->m.quantity,temp->m.tax,temp->m.discount);
+        }
+        temp = temp->link;
+    }
+}
+void insert(){
+    struct node *temp = (struct node*)malloc(sizeof(struct node));
+        printf("Enter the product number: ");
+        scanf("%s",temp->m.product_num);
+        printf("Enter the product name: ");
+        scanf("%s",temp->m.product_name);
+        printf("Enter the price of the product: ");
+        scanf("%d",&temp->m.price);
+        printf("Enter quantity: ");
+        scanf("%d",&temp->m.quantity);
+        printf("Enter the tax: ");
+        scanf("%d",&temp->m.tax);
+        printf("Enter discount: ");
+        scanf("%d",&temp->m.discount);
+        total += (temp->m.price + temp->m.tax - temp->m.discount)*(temp->m.quantity);
+
+        if(head == NULL){
+            temp->link = NULL;
+            head = temp;
+        }
+        else{
+          temp->link = head;
+          head = temp;
+        }
+    }
+void display(){
+    struct node *temp;
+    temp = head;
+    printf("INVOICE\n");
+    printf("The items you purchased are: \n");
+    while(temp != NULL){
+        printf("%s %s %d %d %d %d\n",temp->m.product_num,temp->m.product_name,temp->m.price,temp->m.quantity,temp->m.tax,temp->m.discount);
+        temp = temp->link;
+    }
+    printf("TOTAL BILL: %d\n",total);
+}
+int main(){
+    createlist();
+    int choice;
+    while(1){
+       printf("1.Insert items\n2.Invoice\n3.Display quantity greater than 5\n4.Exit\n");
+       printf("Enter choice: ");
+       scanf("%d",&choice);
+       switch(choice){
+           case 1:{
+               insert();
+               break;
+           }
+           case 2:{
+                display();
+                break;
+           }
+           case 3:{
+               max_quantity();
+               break;
+           }
+           case 4:{
+               printf("Exiting..\n");
+               exit(0);
+               break;
+           }
+       }
+    }
+    
+}
