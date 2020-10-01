@@ -1,0 +1,147 @@
+#include<stdio.h>
+#include<stdlib.h>
+struct bank_account{
+    char bank_name[20];
+    char bank_account_no[30];
+    char name[20];
+    int balance;
+};
+struct node{
+    struct bank_account b;
+    struct node *link;
+};
+struct node *head;
+void display();
+void deposit(){
+    int index, amount;
+    struct node *q;
+    q = head;
+    int i = 0;
+    printf("Select the account: \n");
+    display();
+    scanf("%d",&index);
+    printf("Enter the amount you want to deposit in your account: ");
+    scanf("%d",&amount);
+    while(i < index - 1){
+        q = q->link;
+        i += 1;
+    }
+    q->b.balance += amount;
+    printf("Money is Successfully deposited!!\n");
+    printf("The account details of the user are: \n");
+    printf("%s %s %s %d\n",q->b.bank_account_no,q->b.bank_name,q->b.name,q->b.balance);
+
+}
+void withdraw(){
+    int index, amount;
+    struct node *q;
+    q = head;
+    int i = 0;
+    printf("Select the account: \n");
+    display();
+    scanf("%d",&index);
+    printf("Enter the amount you want to withdraw from your account: ");
+    scanf("%d",&amount);
+    while(i < index - 1){
+        q = q->link;
+        i += 1;
+    }
+    if(q->b.balance > amount){
+        q->b.balance -= amount;
+        printf("withdrawal Successful\n");
+    }
+    else{
+        printf("Your withdraw amount exceeds the balance!!\n");
+        printf("withdrawal FAILED!!!\n");
+    }
+    printf("The account details of the user are: \n");
+    printf("%s %s %s %d\n",q->b.bank_account_no,q->b.bank_name,q->b.name,q->b.balance);
+}
+void createlist(){
+    struct node *temp,*q;
+    int i = 0,n;
+    printf("Enter the number of bank accounts: ");
+    scanf("%d",&n);
+    while(1){
+        temp = (struct node*)malloc(sizeof(struct node));
+        printf("Enter bank_account number: ");
+        scanf("%s",temp->b.bank_account_no);
+        printf("Enter bank_name: ");
+        scanf("%s",temp->b.bank_name);
+        printf("Enter the name of bank account holder: ");
+        scanf("%s",temp->b.name);
+        printf("Enter the balance: ");
+        scanf("%d",&temp->b.balance);
+        if(head == NULL){
+            head = temp;
+            q = temp;
+        }
+        else{
+            q->link = temp;
+            q = temp;
+        }
+        i += 1;
+        if(i < n)
+        ;
+        else{
+            q->link = NULL;
+            break;
+        }
+    }
+}
+void display(){
+    struct node *temp;
+    temp = head;
+    int i = 0;
+    while(temp != NULL){
+        i += 1;
+        printf("%d %s %s %s %d\n",i,temp->b.bank_account_no,temp->b.bank_name,temp->b.name,temp->b.balance);
+    temp = temp->link;
+    }
+}
+void delete(){
+    struct node *temp = (struct node *)malloc(sizeof(struct node));
+    struct node *q = head;
+    int i = 0,index;
+    printf("Enter the account you want to delete: \n");
+    display();
+    scanf("%d",&index);
+    while(i < index - 2){
+        q = q->link;
+        i += 1;
+    }
+    temp = q->link;
+    q->link = temp->link;
+    free(temp);
+    printf("Account deleted Successfully!!\n");
+}
+int main(){
+    createlist();
+    int choice;
+    while(1){
+        printf("Enter the choice\n");
+        printf("1.display\n2.delete account\n3.Deposit\n4.withdraw\n5.Exit\n");
+        scanf("%d",&choice);
+        switch(choice){
+            case 1:{
+                display();
+                break;
+            }
+            case 2:{
+                delete();
+                break;
+            }
+            case 3:{
+                deposit();
+                break;
+            }
+            case 4:{
+                withdraw();
+                break;
+            }
+            default:{
+                return 0;
+            }
+        }
+    }
+}
