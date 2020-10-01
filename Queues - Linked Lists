@@ -1,0 +1,102 @@
+#include<stdio.h>   
+#include<stdlib.h>  
+struct node   
+{  
+    int data;   
+    struct node *link;  
+};  
+struct node *front;  
+struct node *rear;   
+void insert();  
+void delete();  
+void display();  
+void main ()  
+{  
+    int choice;   
+    while(1)   
+    {     
+        printf("1.insert an element\n2.Delete an element\n3.Display the queue\n4.Exit\n");  
+        printf("Enter your choice : ");  
+        scanf("%d",& choice);  
+        switch(choice)  
+        {  
+            case 1:  
+            insert();  
+            break;  
+            case 2:  
+            delete();  
+            break;  
+            case 3:  
+            display();  
+            break;  
+            case 4:  
+            exit(0);  
+            break;  
+            default:   
+            printf("Enter valid choice??\n");  
+        }  
+    }  
+}  
+void insert()  
+{  
+    struct node *q;  
+    int item;   
+      
+    q = (struct node *) malloc (sizeof(struct node));  
+    if(q == NULL)  
+    {  
+        printf("OVERFLOW\n");  
+        return;  
+    }  
+    else  
+    {   
+        printf("Enter value?\n");  
+        scanf("%d",&item);  
+        q -> data = item;  
+        if(front == NULL)  
+        {  
+            front = q;  
+            rear = q;   
+            front -> link = NULL;  
+            rear -> link = NULL;  
+        }  
+        else   
+        {  
+            rear -> link = q;  
+            rear = q;  
+            rear->link = NULL;  
+        }  
+    }  
+}     
+void delete ()  
+{  
+    struct node *q;  
+    if(front == NULL)  
+    {  
+        printf("UNDERFLOW\n");  
+        return;  
+    }  
+    else   
+    {  
+        q = front;  
+        front = front -> link;  
+        free(q);  
+    }  
+}  
+void display()  
+{  
+    struct node *q;  
+    q = front;      
+    if(front == NULL)  
+    {  
+        printf("Empty queue\n");  
+    }  
+    else  
+    {   printf("Queue is: \n");  
+        while(q != NULL)   
+        {  
+            printf("%d\n",q -> data);  
+            q = q -> link;  
+        }  
+    }  
+}
