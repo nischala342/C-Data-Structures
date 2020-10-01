@@ -1,0 +1,211 @@
+#include<stdio.h>
+#include<stdlib.h>
+struct node{
+  int data;
+  struct node *link;
+}*p;
+void reverse(){
+    struct node *previous = NULL;
+    struct node  *present = p ;
+    struct node *next =NULL;
+    while(present != NULL){
+        next = present->link;
+        present->link = previous;
+        previous = present;
+        present = next;
+    }
+    p = previous;
+    
+}
+void sort(){
+     struct node *q = p;
+     struct node *index = NULL;
+     int t;
+     if(p == NULL){
+         printf("Empty list\n");
+     }
+     else{
+        while(q != NULL){
+            index = q->link;
+            while(index != NULL){
+                if(q->data > index->data){
+                    t = q->data;
+                    q->data = index->data;
+                    index->data = t;
+                }
+                index = index->link;
+            }
+            q = q->link;
+            
+        }
+     }
+}
+void insert_begin(int x){
+    struct node *temp = (struct node*)malloc(sizeof(struct node));
+    if(p == NULL){
+    temp->data = x;
+    temp->link = NULL;
+    p = temp;
+    }
+    else {
+        temp->data = x;
+        temp->link = p;
+        p = temp;
+    }
+    printf("Element successfully Inserted at the beginning\n");
+}
+void insert_end(int x){
+    struct node *temp = (struct node*)malloc(sizeof(struct node));
+    if(p == NULL){
+        temp->data = x;
+        p = temp;
+    }
+    temp->data = x;
+    temp->link = NULL;
+    struct node *q = p;
+    while(q ->link != NULL){
+        q = q->link;
+    }
+    q->link =  temp;
+    
+    printf("Element successfully inserted at the end\n");
+}
+void insert_btw(int x,int index){
+    struct node *temp = (struct node*)malloc(sizeof(struct node));
+    struct node *q = p;
+    temp->data = x;
+    int i = 0;
+    while(i < index - 2){
+        q = q ->link;
+        i++;
+    }
+    temp->link = q->link;
+    q ->link = temp;
+    printf("%d inserted at %d position\n",x,index);
+}
+void delete_begin(){
+    struct node *temp = (struct node*)malloc(sizeof(struct node));
+    temp = p;
+    p = p->link;
+    free(temp);
+    printf("First Element deleted\n ");
+}
+void delete_end(){
+    struct node *q = p;
+    struct node *temp;
+    while(q->link->link != NULL){
+        q = q->link;
+    }
+    temp = q->link;
+    q->link = NULL;
+    free(temp);
+    printf("Element at the end deleted\n");
+}
+void delete_btw(int index){
+    struct node *temp = (struct node*)malloc(sizeof(struct node));
+    struct node *q = p;
+    int i = 0;
+    while(i < index - 2){
+        q = q->link;
+        i++;
+    }
+    temp = q->link;
+    q->link = temp->link;
+    free(temp);
+    printf("Element at %d deleted\n",index);
+}
+void traverse(){
+    struct node *q;
+    q = p;
+    printf("Elements in the linked list are:\n");
+    while(q != NULL){
+        printf("%d\n",q->data);
+        q = q->link;
+    }
+}
+void createlist(int n){
+    struct node *q,*temp;
+    int d,i;
+    p = (struct node*)malloc(sizeof(struct node*));
+        printf("Enter data for node 1: ");
+        scanf("%d",&d);
+        p->data = d;
+        p->link = NULL;
+        temp = p;
+      for(i = 2; i <= n; i++){
+        q = (struct node*)malloc(sizeof(struct node*));
+        printf("Enter data for node %d: ",i);
+          scanf("%d",&d);
+          q->data = d;
+          q->link = NULL;
+          temp->link = q;
+          temp = temp->link;
+      }
+      printf("elements added successfully\n");
+}
+int main(){
+    int n;
+    printf("Enter the no. of elements you want to enter in the list: ");
+    scanf("%d",&n);
+    createlist(n);
+    int choice;
+    int x;
+    int index;
+    while(1){
+        printf("Enter your choice\n");
+        printf("1.Insertion at beginning\n2.Insertion at end\n3.Insertion in between\n4.Deletion at the beginning\n5.Deletion at the end\n6.Deletion in between\n7.Print the elements.\n8.Sort\n9.Reverse\n10.Exit the program\n");
+        scanf("%d",&choice);
+        switch(choice){
+            case 1:{
+                printf("Enter the element you want to insert: ");
+                scanf("%d",&x);
+                insert_begin(x);
+                break;
+            }
+            case 2:{
+                printf("Enter the element you want to insert: ");
+                scanf("%d",&x);
+                insert_end(x);
+                break;
+            }
+            case 3:{
+                printf("Enter the element you want to insert: ");
+                scanf("%d",&x);
+                printf("Enter the index in which it should be inserted: ");
+                scanf("%d",&index);
+                insert_btw(x,index);
+                break;
+            }
+            case 4:{
+                delete_begin();
+                break;
+            }
+            case 5:{
+                delete_end();
+                break;
+            }
+            case 6:{
+                printf("enter index to delete: ");
+                scanf("%d",&index);
+                delete_btw(index);
+                break;
+            }
+            case 7:{
+                traverse();
+                break;
+            }
+            case 8:{
+                sort();
+                break;
+            }
+            case 9:{
+                reverse();
+                break;
+            }
+            default:{
+                return 0;
+            }
+        }
+        
+    }
+}
