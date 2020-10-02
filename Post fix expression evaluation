@@ -1,0 +1,73 @@
+#include<stdio.h>
+#include<ctype.h>
+#include<math.h>
+int flag = 0,top = -1;
+float stack[100];
+float op1,op2;
+float operation(float a, float b, char op) {
+    switch(op){
+        case '+' :{
+            return b + a;
+            break;
+        }
+        case '-':{
+            return b - a;
+            break;
+        }
+        case '*':{
+            return b * a;
+            break;
+        }
+        case '/':{
+            return b/a;
+            break;
+        }
+        case '^':{
+            return pow(b,a);
+            break;
+        }
+    }
+}
+float pop(){
+    return stack[top--];
+}
+float push(float x){
+    if(flag == 1){
+        float num;
+        num = pop();
+        stack[++top] = x + 10*num;
+    }
+    else if (flag ==0){
+        stack[++top] = x;
+        flag = 1;
+    }
+}
+float Evaluation(char* expression){
+    int i = 0;
+    char ch;
+    float x;
+    while( expression[i] != '\n'){
+        ch = expression[i];
+        if(isdigit(ch)){
+            push(ch - '0');
+        }
+        else if(ch == ' '){
+            flag = 0;
+        }
+        else{
+            flag = 0;
+            op1 = pop();
+            op2 = pop();
+            x = operation(op1,op2,ch);
+            push(x);
+        }
+        i += 1;
+    }
+    return stack[top];
+}
+int main(){
+    char expression[50];
+    printf("Enter the post fix expression: ");
+    fgets(expression,50,stdin);
+    printf("%.2f",Evaluation(expression));
+}
